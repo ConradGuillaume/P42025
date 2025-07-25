@@ -1,4 +1,4 @@
-// menu responsive
+// Fonction pour rendre le menu responsive (mobile)
 function editNav() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -8,28 +8,29 @@ function editNav() {
   }
 }
 
-// DOM Elements
-const modalbg = document.getElementById("formModal");
-const modalBtn = document.querySelectorAll(".modal-btn");
-const closeModal = document.querySelector(".close");
-const form = document.forms["reserve"];
-const formData = document.querySelectorAll(".formData");
+// Sélection des éléments du DOM nécessaires pour la gestion des modales et du formulaire
+const modalbg = document.getElementById("formModal"); // Modale du formulaire
+const modalBtn = document.querySelectorAll(".modal-btn"); // Boutons pour ouvrir la modale
+const closeModal = document.querySelector(".close"); // Bouton pour fermer la modale formulaire
+const form = document.forms["reserve"]; // Formulaire de réservation
+const formData = document.querySelectorAll(".formData"); // Champs du formulaire
 
-const confirmationModal = document.getElementById("confirmationModal");
-const confirmClose = document.getElementById("confirmClose");
-const confirmBtn = document.getElementById("confirmBtn");
+const confirmationModal = document.getElementById("confirmationModal"); // Modale de confirmation
+const confirmClose = document.getElementById("confirmClose"); // Bouton pour fermer la modale de confirmation
+const confirmBtn = document.getElementById("confirmBtn"); // Autre bouton pour fermer la modale de confirmation
 
-// open modal
+// Ouvre la modale du formulaire quand on clique sur un bouton d'ouverture
 modalBtn.forEach((btn) =>
   btn.addEventListener("click", () => {
     modalbg.style.display = "block";
   })
 );
 
-// close
+// Ferme la modale du formulaire
 closeModal.addEventListener("click", () => {
   modalbg.style.display = "none";
 });
+// Ferme la modale de confirmation (croix ou bouton)
 confirmClose.addEventListener("click", () => {
   confirmationModal.style.display = "none";
 });
@@ -37,15 +38,17 @@ confirmBtn.addEventListener("click", () => {
   confirmationModal.style.display = "none";
 });
 
-// form validation
+// Validation du formulaire à la soumission
 form.addEventListener("submit", function (e) {
-  e.preventDefault();
+  e.preventDefault(); // Empêche l'envoi du formulaire par défaut
   let valid = true;
 
+  // Réinitialise l'affichage des erreurs
   formData.forEach((field) => {
     field.removeAttribute("data-error-visible");
   });
 
+  // Vérifie chaque champ et affiche une erreur si besoin
   if (form.first.value.trim().length < 2) {
     setError("first", "Veuillez entrer 2 caractères minimum.");
     valid = false;
@@ -75,6 +78,7 @@ form.addEventListener("submit", function (e) {
     valid = false;
   }
 
+  // Si tout est valide, ferme la modale formulaire, réinitialise le formulaire et affiche la confirmation
   if (valid) {
     modalbg.style.display = "none";
     form.reset();
@@ -82,7 +86,7 @@ form.addEventListener("submit", function (e) {
   }
 });
 
-// utilities
+// Affiche une erreur sur un champ donné
 function setError(id, message) {
   const input = document.getElementById(id);
   const field = input.closest(".formData") || input;
@@ -90,18 +94,20 @@ function setError(id, message) {
   field.setAttribute("data-error", message);
 }
 
+// Vérifie si l'email est valide avec une expression régulière
 function validateEmail(email) {
   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i;
   return regex.test(email);
 }
 
+// Efface l'erreur d'un champ donné
 function clearError(id) {
   const input = document.getElementById(id);
   const field = input.closest(".formData") || input;
   field.removeAttribute("data-error-visible");
 }
 
-// live validation
+// Validation en direct (live) sur chaque champ du formulaire
 form.first.addEventListener("input", () => {
   if (form.first.value.trim().length >= 2) clearError("first");
 });
